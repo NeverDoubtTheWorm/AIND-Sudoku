@@ -45,7 +45,9 @@ col_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs)
                 for rs in ('ABC', 'DEF', 'GHI')
                 for cs in ('123', '456', '789')]
-unitlist = row_units + col_units + square_units
+main_diag = [''.join(x) for x in zip(rows, cols)]
+anti_diag = [''.join(x) for x in zip(rows, cols[::-1])]
+unitlist = row_units + col_units + square_units + [main_diag, anti_diag]
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
 
