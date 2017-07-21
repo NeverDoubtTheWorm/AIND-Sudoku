@@ -29,6 +29,7 @@ def naked_twins(values):
 
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
+    return values
 
 
 def cross(A, B):
@@ -100,7 +101,7 @@ def only_choice(values):
         for digit in digits:
             digit_locs = [box for box in boxes if digit in values[box]]
             if len(digit_locs) == 1:
-                values[digit_locs[0]] = digit
+                values = assign_value(values, digit_locs[0], digit)
     return values
 
 
@@ -109,7 +110,7 @@ def reduce_puzzle(values):
     while not stalled:
         solved_values_before = len([box for box in values.keys()
                                     if len(values[box]) == 1])
-        values = only_choice(eliminate(values))
+        values = only_choice(naked_twins(eliminate(values)))
         solved_values_after = len([box for box in values.keys()
                                    if len(values[box]) == 1])
         stalled = solved_values_before == solved_values_after
@@ -144,6 +145,7 @@ def solve(grid):
         The dictionary representation of the final sudoku grid. False if no
         solution exists.
     """
+    return search(grid_values(grid))
 
 if __name__ == '__main__':
     diag_sudoku_grid = ('2.............62....1....7...6..8...3...9'
