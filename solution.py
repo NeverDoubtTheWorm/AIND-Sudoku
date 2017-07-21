@@ -33,7 +33,20 @@ def naked_twins(values):
 
 def cross(A, B):
     "Cross product of elements in A and elements in B."
-    pass
+    return [a+b for a in A for b in B]
+
+digits = '123456789'
+rows = 'ABCDEFGHI'
+cols = '123456789'
+boxes = cross(rows, cols)
+row_units = [cross(r, cols) for r in rows]
+col_units = [cross(rows, c) for c in cols]
+square_units = [cross(rs, cs)
+                for rs in ('ABC', 'DEF', 'GHI')
+                for cs in ('123', '456', '789')]
+unitlist = row_units + col_units + square_units
+units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
+peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
 
 
 def grid_values(grid):
@@ -47,7 +60,14 @@ def grid_values(grid):
             Values: The value in each box, e.g., '8'. If the box has no value,
             then the value will be '123456789'.
     """
-    pass
+    chars = []
+    for c in grid:
+        if c in digits:
+            chars.append(c)
+        else:
+            chars.append(digits)
+    assert len(chars) == 81
+    return dict(zip(boxes, chars))
 
 
 def display(values):
@@ -56,23 +76,61 @@ def display(values):
     Args:
         values(dict): The sudoku in dictionary form
     """
-    pass
+    width = 1+max(len(values[s]) for s in boxes)
+    line = '+'.join(['-'*(width*3)]*3)
+    for r in rows:
+        print(''.join(values[r+c].center(width)+('|' if c in '36' else '')
+                      for c in cols))
+        if r in 'CF':
+            print(line)
+    return
 
 
 def eliminate(values):
-    pass
+    solved = [k for k, v in values.items() if len(v) == 1]
+    for box in solved:
+        digit = values[box]
+        for peer in peers[box]:
+            values[peer] = values[peer].replace(digit, '')
+    return values
 
 
 def only_choice(values):
-    pass
+    for unit in unitlist:
+        for digit in digits:
+            digit_locs = [box for box in boxes if digit in values[box]]
+            if len(digit_locs) == 1:
+                values[digit_locs[0]] = digit
+    return values
 
 
 def reduce_puzzle(values):
-    pass
+    stalled = False
+    while not stalled:
+        solved_values_before = len([box for box in values.keys()
+                                    if len(values[box]) == 1])
+        values = only_choice(eliminate(values))
+        solved_values_after = len([box for box in values.keys()
+                                   if len(values[box]) == 1])
+        stalled = solved_values_before == solved_values_after
+        if len([box for box in values.keys() if len(values[box]) == 0]):
+            return False
+    return values
 
 
 def search(values):
-    pass
+    values = reduce_puzzle(values)
+    if not values:
+        return False
+    if all(len(values[box]) == 1 for box in boxes):
+        return values
+    _, box = min((values[box], box) for box in boxes if len(values[box]) > 1)
+    for value in values[box]:
+        attempt = values.copy()
+        attempt[box] = value
+        attempt = search(attempt)
+        if attempt:
+            return attempt
 
 
 def solve(grid):
