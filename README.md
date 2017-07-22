@@ -2,18 +2,27 @@
 ## Introductory Project: Diagonal Sudoku Solver
 
 # Question 1 (Naked Twins)
-Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+Q: How do we use constraint propagation to solve the naked twins problem?
+A: The Naked twins paradigm shows us that if in a unit there exist a pair of
+cells such that the cells have only two possible values and these potential
+values are furthermore identical between the two cells. We may conclude that
+no other cells in this unit may contain the values held by these twin cells.
+Therefore we can eliminate possible values from our search space.
 
 # Question 2 (Diagonal Sudoku)
-Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+Q: How do we use constraint propagation to solve the diagonal sudoku problem?
+A: Adding the diagonal creates a new constraint we can use to reduce our search
+space. We now now that the cells along the main diagonal as well as the cells along the anti-diagonal must collectively contain every digits between 1 and 9
+inclusive in in the final solution. This increases the number of peers that
+restrict the values of the cells along these diagonals by 6 which allows the
+other constraints to have a greater effect on these cells, reducing our search
+space.
 
 ### Install
 
 This project requires **Python 3**.
 
-We recommend students install [Anaconda](https://www.continuum.io/downloads), a pre-packaged Python distribution that contains all of the necessary libraries and software for this project. 
+We recommend students install [Anaconda](https://www.continuum.io/downloads), a pre-packaged Python distribution that contains all of the necessary libraries and software for this project.
 Please try using the environment we provided in the Anaconda lesson of the Nanodegree.
 
 ##### Optional: Pygame
@@ -34,9 +43,9 @@ If not, please see how to download pygame [here](http://www.pygame.org/download.
 To visualize your solution, please only assign values to the values_dict using the `assign_value` function provided in solution.py
 
 ### Submission
-Before submitting your solution to a reviewer, you are required to submit your project to Udacity's Project Assistant, which will provide some initial feedback.  
+Before submitting your solution to a reviewer, you are required to submit your project to Udacity's Project Assistant, which will provide some initial feedback.
 
-The setup is simple.  If you have not installed the client tool already, then you may do so with the command `pip install udacity-pa`.  
+The setup is simple.  If you have not installed the client tool already, then you may do so with the command `pip install udacity-pa`.
 
 To submit your code to the project assistant, run `udacity submit` from within the top-level directory of this project.  You will be prompted for a username and password.  If you login using google or facebook, visit [this link](https://project-assistant.udacity.com/auth_tokens/jwt_login) for alternate login instructions.
 
