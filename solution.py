@@ -36,10 +36,12 @@ def naked_twins(values):
                         for a, b in itertools.combinations(poss_twin_locs, 2)
                         if values[a] == values[b]]
         for twins in actual_twins:
-            for digit in values[twins[0]]:
-                for box in unit:
-                    if box not in twins and digit in values[box]:
-                        values[box] = values[box].replace(digit, '')
+            for box in unit:
+                if box not in twins:
+                    new_value = values[box]
+                    for digit in values[twins[0]]:
+                        new_value = new_value.replace(digit, '')
+                    values = assign_value(values, box, new_value)
     return values
 
 
@@ -105,7 +107,8 @@ def eliminate(values):
     for box in solved:
         digit = values[box]
         for peer in peers[box]:
-            values[peer] = values[peer].replace(digit, '')
+            values = assign_value(values, peer,
+                                  values[peer].replace(digit, ''))
     return values
 
 
