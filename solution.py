@@ -1,3 +1,4 @@
+import itertools
 assignments = []
 
 
@@ -29,6 +30,16 @@ def naked_twins(values):
 
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
+    for unit in unitlist:
+        poss_twin_locs = [box for box in unit if len(values[box]) == 2]
+        actual_twins = [(a, b)
+                        for a, b in itertools.combinations(poss_twin_locs, 2)
+                        if values[a] == values[b]]
+        for twins in actual_twins:
+            for digit in values[twins[0]]:
+                for box in unit:
+                    if box not in twins and digit in values[box]:
+                        values[box] = values[box].replace(digit, '')
     return values
 
 
