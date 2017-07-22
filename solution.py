@@ -18,8 +18,8 @@ unitlist = ([cross(r, cols) for r in rows] +            # row_units
             [                                           # diag_units
                 [''.join(x) for x in zip(rows, cols)],
                 [''.join(x) for x in zip(rows, cols[::-1])]])
-units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
-peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
+units = dict((b, [u for u in unitlist if b in u]) for b in boxes)
+peers = dict((b, set(sum(units[b], []))-set([b])) for b in boxes)
 
 
 def assign_value(values, box, value):
@@ -134,12 +134,12 @@ def search(values):
     values = reduce_puzzle(values)
     if not values:
         return False
-    if all(len(values[box]) == 1 for box in boxes):
+    if all(len(values[b]) == 1 for b in boxes):
         return values
-    _, box = min((values[box], box) for box in boxes if len(values[box]) > 1)
-    for value in values[box]:
+    _, b = min((len(values[b]), b) for b in boxes if len(values[b]) > 1)
+    for value in values[b]:
         attempt = values.copy()
-        attempt[box] = value
+        attempt[b] = value
         attempt = search(attempt)
         if attempt:
             return attempt
