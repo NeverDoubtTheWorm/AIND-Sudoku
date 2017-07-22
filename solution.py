@@ -10,14 +10,14 @@ digits = '123456789'
 rows = 'ABCDEFGHI'
 cols = '123456789'
 boxes = cross(rows, cols)
-row_units = [cross(r, cols) for r in rows]
-col_units = [cross(rows, c) for c in cols]
-square_units = [cross(rs, cs)
+unitlist = ([cross(r, cols) for r in rows] +            # row_units
+            [cross(rows, c) for c in cols] +            # col_units
+            [cross(rs, cs)                              # square_units
                 for rs in ('ABC', 'DEF', 'GHI')
-                for cs in ('123', '456', '789')]
-main_diag = [''.join(x) for x in zip(rows, cols)]
-anti_diag = [''.join(x) for x in zip(rows, cols[::-1])]
-unitlist = row_units + col_units + square_units + [main_diag, anti_diag]
+                for cs in ('123', '456', '789')] +
+            [                                           # diag_units
+                [''.join(x) for x in zip(rows, cols)],
+                [''.join(x) for x in zip(rows, cols[::-1])]])
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
 
