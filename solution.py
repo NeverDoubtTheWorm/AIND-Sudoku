@@ -76,12 +76,7 @@ def grid_values(grid):
             Values: The value in each box, e.g., '8'. If the box has no value,
             then the value will be '123456789'.
     """
-    chars = []
-    for c in grid:
-        if c in digits:
-            chars.append(c)
-        else:
-            chars.append(digits)
+    chars = [c if c in digits else digits for c in grid]
     assert len(chars) == 81
     return dict(zip(boxes, chars))
 
