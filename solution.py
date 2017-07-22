@@ -110,7 +110,7 @@ def eliminate(values):
 def only_choice(values):
     for unit in unitlist:
         for digit in digits:
-            digit_locs = [box for box in boxes if digit in values[box]]
+            digit_locs = [box for box in unit if digit in values[box]]
             if len(digit_locs) == 1:
                 values = assign_value(values, digit_locs[0], digit)
     return values
